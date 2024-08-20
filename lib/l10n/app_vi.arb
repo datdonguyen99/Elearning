@@ -1,0 +1,7 @@
+{
+    "login": "Đăng nhập",
+    "about": "About",
+    "copyLogsSuccess": "Sao chép log thành công",
+    "copyLogsNoLogs": "Không tìm thấy log để sao chép",
+    "offlineMode": "Chế độ Offline"
+}

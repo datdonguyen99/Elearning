@@ -1,0 +1,7 @@
+{
+    "login": "Login",
+    "about": "About",
+    "copyLogsSuccess": "Logs copied successfully",
+    "copyLogsNoLogs": "No logs found to copy",
+    "offlineMode": "Offline mode"
+}

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:elearning/widgets/spinner.dart';
+// import 'package:elearning/widgets/spinner.dart';
 import 'package:elearning/widgets/base_button.dart';
 import 'package:elearning/extensions/l10n.dart';
 import 'package:elearning/utilities/toast.dart';
@@ -139,17 +139,17 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildLoadingWidget() {
-    return const Center(
-      child: Padding(
-        padding: EdgeInsets.all(35),
-        child: Spinner(),
-      ),
-    );
-  }
+  // Widget _buildLoadingWidget() {
+  //   return const Center(
+  //     child: Padding(
+  //       padding: EdgeInsets.all(35),
+  //       child: Spinner(),
+  //     ),
+  //   );
+  // }
 
   void login(String email, String password) async {
-    print('Login button pressed: $email, $password');
+    // print('Login button pressed: $email, $password');
     showCustomToast(message: "Test login toast");
   }
 }

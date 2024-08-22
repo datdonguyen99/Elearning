@@ -25,6 +25,7 @@ class Logger {
     try {
       if (_logs != '') {
         await Clipboard.setData(ClipboardData(text: _logs));
+        // ignore: use_build_context_synchronously
         return '${context.l10n!.copyLogsSuccess}.';
       } else {
         return '${context.l10n!.copyLogsNoLogs}.';

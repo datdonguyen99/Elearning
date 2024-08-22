@@ -3,8 +3,10 @@ name: Build & Release
 on:
   # Event will trigger job
   push:
-    branches:
-      - main
+    # branches:
+    # - main
+    tags:
+      - "v*"
 
 jobs:
   build:
@@ -16,11 +18,15 @@ jobs:
       - name: Clone repository
         uses: actions/checkout@v4
 
-      # Extract version from commit message
+      # Extract version
       - name: Extract version
         id: extract_version
         run: |
-          version=$(echo ${{ github.event.head_commit.message }} | grep -oP '(?<=Update: v)\d+\.\d+\.\d+')
+          # From commit message
+          # version=$(echo ${{ github.event.head_commit.message }} | grep -oP '(?<=Update: v)\d+\.\d+\.\d+')
+
+          # From tag
+          version=$(echo ${{ github.ref_name }} | grep -oP '(?<=v)\d+\.\d+\.\d+')
           echo "version=${version}" >> $GITHUB_OUTPUT
 
       # Setup Java env

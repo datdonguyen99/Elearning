@@ -44,9 +44,11 @@ jobs:
           flutter-version-file: pubspec.yaml # path to pubspec.yaml
           architecture: x64
 
-      # Install Dependencies
-      - name: Install depenencies
-        run: flutter pub get
+      # Install Dependencies and generate localization files
+      - name: Install depenencies and generate localization files
+        run: |
+          flutter pub get
+          flutter gen-l10n
 
       # Check for any formatting issues in the code.
       - name: Check code formatting

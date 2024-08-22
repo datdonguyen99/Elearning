@@ -58,6 +58,40 @@ jobs:
       - name: Analyze Dart code
         run: flutter analyze .
 
+      # Install Pod
+      - name: Install Pod
+        run: |
+          cd ios
+          if [ -f Podfile.lock ]; then
+            rm Podfile.lock
+          fi
+          pod deintegrate
+          pod repo update
+          pod install
+
+      # Build IOS
+      - name: Build ipa for IOS
+        run: |
+          flutter build ios --no-codesign
+          cd build/ios/iphoneos
+          mkdir Payload
+          cd Payload
+          ln -s ../Runner.app
+          cd ..
+          zip -r app.ipa Payload
+
+      # Release IPA
+      - name: Release IPA
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_name: datdonguyen99/Elearning
+          repo_token: ${{ secrets.ELEARNING_SECRET_TOKEN }}
+          file: build/ios/iphoneos/app.ipa
+          asset_name: Elearning-ios-version-${{ steps.extract_version.outputs.version }}.ipa
+          tag: ${{ steps.extract_version.outputs.version }}
+          prerelease: true
+          overwrite: true
+
       # Build Android for GitHub release
       # when use split-per-abi
       # - app-armeabi-v7a-release.apk: small file(most devices use this version)
@@ -91,40 +125,6 @@ jobs:
           repo_token: ${{ secrets.ELEARNING_SECRET_TOKEN }}
           file: build/app/outputs/flutter-apk/app-github-release.apk
           asset_name: Elearning-version-${{ steps.extract_version.outputs.version }}.apk
-          tag: ${{ steps.extract_version.outputs.version }}
-          prerelease: true
-          overwrite: true
-
-      # Install Pod
-      - name: Install Pod
-        run: |
-          cd ios
-          if [ -f Podfile.lock ]; then
-            rm Podfile.lock
-          fi
-          pod deintegrate
-          pod repo update
-          pod install
-
-      # Build IOS
-      - name: Build ipa for IOS
-        run: |
-          flutter ios build --no-codesign
-          cd build/ios/iphoneos
-          mkdir Payload
-          cd Payload
-          ln -s ../Runner.app
-          cd ..
-          zip -r app.ipa Payload
-
-      # Release IPA
-      - name: Release IPA
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_name: datdonguyen99/Elearning
-          repo_token: ${{ secrets.ELEARNING_SECRET_TOKEN }}
-          file: build/ios/iphoneos/app.ipa
-          asset_name: Elearning-ios-version-${{ steps.extract_version.outputs.version }}.ipa
           tag: ${{ steps.extract_version.outputs.version }}
           prerelease: true
           overwrite: true

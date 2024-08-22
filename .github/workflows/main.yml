@@ -72,7 +72,7 @@ jobs:
         with:
           repo_name: datdonguyen99/Elearning
           # Token repo, [setting -> developer settings -> personal access token -> ]
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          repo_token: ${{ secrets.ELEARNING_SECRET_TOKEN }}
           file: build/app/outputs/flutter-apk/app-arm64-v8a-github-release.apk
           asset_name: Elearning-arm64-v8a.apk
           tag: ${{ steps.extract_version.outputs.version }}

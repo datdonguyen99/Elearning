@@ -74,7 +74,7 @@ jobs:
           # Token repo, [setting -> developer settings -> personal access token -> ]
           repo_token: ${{ secrets.ELEARNING_SECRET_TOKEN }}
           file: build/app/outputs/flutter-apk/app-arm64-v8a-github-release.apk
-          asset_name: Elearning-arm64-v8a.apk
+          asset_name: Elearning-arm64-v8a-version-${{ steps.extract_version.outputs.version }}.apk
           tag: ${{ steps.extract_version.outputs.version }}
           prerelease: false
           overwrite: true

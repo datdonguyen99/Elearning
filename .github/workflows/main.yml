@@ -78,3 +78,19 @@ jobs:
           tag: ${{ steps.extract_version.outputs.version }}
           prerelease: false
           overwrite: true
+
+      # Build universal APK
+      - name: Build universal APK
+        run: flutter build apk --release --flavor github
+
+      # Release universal APK
+      - name: Release universal APK
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_name: datdonguyen99/Elearning
+          repo_token: ${{ secrets.ELEARNING_SECRET_TOKEN }}
+          file: build/app/outputs/flutter-apk/app-github-release.apk
+          asset_name: Elearning-version-${{ steps.extract_version.outputs.version }}.apk
+          tag: ${{ steps.extract_version.outputs.version }}
+          prerelease: true
+          overwrite: true

@@ -94,3 +94,35 @@ jobs:
           tag: ${{ steps.extract_version.outputs.version }}
           prerelease: true
           overwrite: true
+
+      # Install Pod
+      - name: Install Pod
+        run: |
+          cd ios
+          rm podfile.lock
+          pod deintegrate
+          pod repo update
+          pod install
+
+      # Build IOS
+      - name: Build ipa for IOS
+        run: |
+          flutter ios build --no-codesign
+          cd build/ios/iphoneos
+          mkdir Payload
+          cd Payload
+          ln -s ../Runner.app
+          cd ..
+          zip -r app.ipa Payload
+
+      # Release IPA
+      - name: Release IPA
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_name: datdonguyen99/Elearning
+          repo_token: ${{ secrets.ELEARNING_SECRET_TOKEN }}
+          file: build/ios/iphoneos/app.ipa
+          asset_name: Elearning-ios-version-${{ steps.extract_version.outputs.version }}.ipa
+          tag: ${{ steps.extract_version.outputs.version }}
+          prerelease: true
+          overwrite: true

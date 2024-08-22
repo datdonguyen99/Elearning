@@ -42,6 +42,7 @@ jobs:
         with:
           channel: stable
           flutter-version-file: pubspec.yaml # path to pubspec.yaml
+          architecture: x64
 
       # Install Dependencies
       - name: Install depenencies

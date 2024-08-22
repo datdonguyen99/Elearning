@@ -99,7 +99,9 @@ jobs:
       - name: Install Pod
         run: |
           cd ios
-          rm podfile.lock
+          if [ -f Podfile.lock ]; then
+            rm Podfile.lock
+          fi
           pod deintegrate
           pod repo update
           pod install

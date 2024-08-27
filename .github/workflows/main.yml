@@ -109,8 +109,9 @@ jobs:
         with:
           name: app-release-github
           path: |
-            build/app/outputs/flutter-apk/app-arm64-v8a-github-release.apk
-            build/app/outputs/flutter-apk/app-github-release.apk
+            # build/app/outputs/flutter-apk/app-arm64-v8a-github-release.apk
+            # build/app/outputs/flutter-apk/app-github-release.apk
+            build/app/outputs/flutter-apk/*.apk
             build/ios/iphoneos/app.ipa
 
   # Release job, upload the apk and ipa to github
@@ -136,8 +137,8 @@ jobs:
           repo_name: datdonguyen99/Elearning
           repo_token: ${{ secrets.ELEARNING_SECRET_TOKEN }}
           file: build/ios/iphoneos/app.ipa
-          asset_name: Elearning-ios-version-${{ steps.extract_version.outputs.version }}.ipa
-          tag: ${{ steps.extract_version.outputs.version }}
+          asset_name: Elearning-ios-version-${{ needs.build.outputs.version }}.ipa
+          tag: ${{ needs.build.outputs.version }}
           prerelease: true
           overwrite: true
 
@@ -149,8 +150,8 @@ jobs:
           # Token repo, [setting -> developer settings -> personal access token -> ]
           repo_token: ${{ secrets.ELEARNING_SECRET_TOKEN }}
           file: build/app/outputs/flutter-apk/app-arm64-v8a-github-release.apk
-          asset_name: Elearning-arm64-v8a-version-${{ steps.extract_version.outputs.version }}.apk
-          tag: ${{ steps.extract_version.outputs.version }}
+          asset_name: Elearning-arm64-v8a-version-${{ needs.build.outputs.version }}.apk
+          tag: ${{ needs.build.outputs.version }}
           prerelease: false
           overwrite: true
 
@@ -161,7 +162,7 @@ jobs:
           repo_name: datdonguyen99/Elearning
           repo_token: ${{ secrets.ELEARNING_SECRET_TOKEN }}
           file: build/app/outputs/flutter-apk/app-github-release.apk
-          asset_name: Elearning-version-${{ steps.extract_version.outputs.version }}.apk
-          tag: ${{ steps.extract_version.outputs.version }}
+          asset_name: Elearning-version-${{ needs.build.outputs.version }}.apk
+          tag: ${{ needs.build.outputs.version }}
           prerelease: true
           overwrite: true

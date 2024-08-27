@@ -123,22 +123,19 @@ jobs:
     runs-on: macos-12
     strategy:
       matrix:
-        file:
-          - build/ios/iphoneos/app.ipa
-          - build/app/outputs/flutter-apk/app-arm64-v8a-github-release.apk
-          - build/app/outputs/flutter-apk/app-github-release.apk
-        asset_name:
-          - Elearning-ios # IPA
-          - Elearning-arm64-v8a # arm64 generated APK
-          - Elearning # universal APK
-        extension:
-          - ipa
-          - apk
-          - apk
-        prerelease:
-          - false
-          - false
-          - false
+        include:
+          - file: build/ios/iphoneos/app.ipa
+            asset_name: Elearning-ios # IPA
+            extension: ipa
+            prerelease: false
+          - file: build/app/outputs/flutter-apk/app-arm64-v8a-github-release.apk
+            asset_name: Elearning-arm64-v8a # arm64 generated APK
+            extension: apk
+            prerelease: false
+          - file: build/app/outputs/flutter-apk/app-github-release.apk
+            asset_name: Elearning # universal APK
+            extension: apk
+            prerelease: false
 
     steps:
       # Download files built and uploaded to artifact from job [build]

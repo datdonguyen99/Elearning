@@ -36,6 +36,17 @@ jobs:
           distribution: temurin
           java-version: "17.x"
 
+      # Gradle cache for faster builds
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
       # Setup Flutter env
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -80,6 +91,44 @@ jobs:
           cd ..
           zip -r app.ipa Payload
 
+      # Build Android for GitHub release
+      # when use split-per-abi
+      # - app-armeabi-v7a-release.apk: small file(most devices use this version)
+      # - app-arm64-v8a.apk: medium file(new version e.g Sumsung)
+      # - app-x86_64-release.apk: medium file(e.g intel)
+      - name: Build arm64 APK
+        run: flutter build apk --release --split-per-abi --target-platform="android-arm64" --flavor github
+
+      # Build universal APK
+      - name: Build universal APK
+        run: flutter build apk --release --flavor github
+
+      # Collect files built and upload to Github artifacts
+      - name: Collect files built and upload to Github artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-github
+          path: |
+            build/app/outputs/flutter-apk/app-arm64-v8a-github-release.apk
+            build/app/outputs/flutter-apk/app-github-release.apk
+            build/ios/iphoneos/app.ipa
+
+  # Release job, upload the apk and ipa to github
+  release:
+    name: Release APK and IPA
+    needs: [build] # Need job [build] before
+    runs-on: macos-12
+    steps:
+      # Download files built and uploaded to artifact from job [build]
+      - name: Get app-release from artifacts
+        uses: actions/download-artifact@v4
+        with:
+          # Get from app-release-github
+          name: app-release-github
+          # Save to build folder
+          path: build
+          merge-multiple: true
+
       # Release IPA
       - name: Release IPA
         uses: svenstaro/upload-release-action@v2
@@ -91,14 +140,6 @@ jobs:
           tag: ${{ steps.extract_version.outputs.version }}
           prerelease: true
           overwrite: true
-
-      # Build Android for GitHub release
-      # when use split-per-abi
-      # - app-armeabi-v7a-release.apk: small file(most devices use this version)
-      # - app-arm64-v8a.apk: medium file(new version e.g Sumsung)
-      # - app-x86_64-release.apk: medium file(e.g intel)
-      - name: Build arm64 APK
-        run: flutter build apk --release --split-per-abi --target-platform="android-arm64" --flavor github
 
       # Release arm64 generated APK
       - name: Release arm64 APK
@@ -112,10 +153,6 @@ jobs:
           tag: ${{ steps.extract_version.outputs.version }}
           prerelease: false
           overwrite: true
-
-      # Build universal APK
-      - name: Build universal APK
-        run: flutter build apk --release --flavor github
 
       # Release universal APK
       - name: Release universal APK

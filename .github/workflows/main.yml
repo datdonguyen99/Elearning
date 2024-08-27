@@ -121,6 +121,25 @@ jobs:
     name: Release APK and IPA
     needs: [build] # Need job [build] before
     runs-on: macos-12
+    strategy:
+      matrix:
+        file:
+          - build/ios/iphoneos/app.ipa
+          - build/app/outputs/flutter-apk/app-arm64-v8a-github-release.apk
+          - build/app/outputs/flutter-apk/app-github-release.apk
+        asset_name:
+          - Elearning-ios # IPA
+          - Elearning-arm64-v8a # arm64 generated APK
+          - Elearning # universal APK
+        extension:
+          - ipa
+          - apk
+          - apk
+        prerelease:
+          - false
+          - false
+          - false
+
     steps:
       # Download files built and uploaded to artifact from job [build]
       - name: Get app-release from artifacts
@@ -132,39 +151,15 @@ jobs:
           path: build
           merge-multiple: true
 
-      # Release IPA
-      - name: Release IPA
+      # Release IPA and APK
+      - name: Release IPA and APK to Github
         uses: svenstaro/upload-release-action@v2
         with:
           repo_name: datdonguyen99/Elearning
+          # Token repo, [setting -> developer settings -> personal access token]
           repo_token: ${{ secrets.ELEARNING_SECRET_TOKEN }}
-          file: build/ios/iphoneos/app.ipa
-          asset_name: Elearning-ios-version-${{ needs.build.outputs.version }}.ipa
+          file: ${{ matrix.file }}
+          asset_name: ${{ matrix.asset_name }}-version-${{ needs.build.outputs.version }}.${{ matrix.extension }}
           tag: ${{ needs.build.outputs.version }}
-          prerelease: true
-          overwrite: true
-
-      # Release arm64 generated APK
-      - name: Release arm64 APK
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_name: datdonguyen99/Elearning
-          # Token repo, [setting -> developer settings -> personal access token -> ]
-          repo_token: ${{ secrets.ELEARNING_SECRET_TOKEN }}
-          file: build/app/outputs/flutter-apk/app-arm64-v8a-github-release.apk
-          asset_name: Elearning-arm64-v8a-version-${{ needs.build.outputs.version }}.apk
-          tag: ${{ needs.build.outputs.version }}
-          prerelease: false
-          overwrite: true
-
-      # Release universal APK
-      - name: Release universal APK
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_name: datdonguyen99/Elearning
-          repo_token: ${{ secrets.ELEARNING_SECRET_TOKEN }}
-          file: build/app/outputs/flutter-apk/app-github-release.apk
-          asset_name: Elearning-version-${{ needs.build.outputs.version }}.apk
-          tag: ${{ needs.build.outputs.version }}
-          prerelease: true
+          prerelease: ${{ matrix.prerelease }}
           overwrite: true

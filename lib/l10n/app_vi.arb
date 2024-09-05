@@ -3,5 +3,14 @@
     "about": "About",
     "copyLogsSuccess": "Sao chép log thành công",
     "copyLogsNoLogs": "Không tìm thấy log để sao chép",
-    "offlineMode": "Chế độ Offline"
+    "offlineMode": "Chế độ Offline",
+    "home": "Trang chủ",
+    "setting": "Cài đặt",
+    "courses": "Khóa học",
+    "preferences": "Tùy chọn",
+    "others": "Khác",
+    "licenses": "Giấy phép",
+    "themeMode": "Chủ đề",
+    "language": "Ngôn ngữ",
+    "languageMsg": "Thay đổi ngôn ngữ thành công!"
 }

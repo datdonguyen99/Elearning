@@ -21,8 +21,11 @@ final appSupportedLocales = appLanguages.values
 class ElearningApp extends StatefulWidget {
   const ElearningApp({super.key});
 
-  static Future<void> updateAppSate(BuildContext context,
-      {ThemeMode? newThemeMode, Locale? newLocale}) async {
+  static Future<void> updateAppSate(
+    BuildContext context, {
+    ThemeMode? newThemeMode,
+    Locale? newLocale,
+  }) async {
     final state = context.findAncestorStateOfType<_ElearningAppState>()!;
     state.changeSettings(newThemeMode: newThemeMode, newLocale: newLocale);
   }
@@ -78,6 +81,8 @@ class _ElearningAppState extends State<ElearningApp> {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       themeMode: themeMode,
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,

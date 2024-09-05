@@ -3,5 +3,14 @@
     "about": "About",
     "copyLogsSuccess": "Logs copied successfully",
     "copyLogsNoLogs": "No logs found to copy",
-    "offlineMode": "Offline mode"
+    "offlineMode": "Offline mode",
+    "home": "Home",
+    "setting": "Settings",
+    "courses": "Courses",
+    "preferences": "Preferences",
+    "others": "Others",
+    "licenses": "Licenses",
+    "themeMode": "Theme Mode",
+    "language": "Language",
+    "languageMsg": "Language changed successfully!"
 }

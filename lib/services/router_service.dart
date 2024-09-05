@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:elearning/services/settings_manager.dart';
+import 'package:elearning/screens/bottom_navigation_page.dart';
 import 'package:elearning/screens/login_page.dart';
+import 'package:elearning/screens/home_page.dart';
+import 'package:elearning/screens/settings_page.dart';
 
 class NavigationManager {
   factory NavigationManager() {
@@ -20,18 +22,30 @@ class NavigationManager {
   static final GlobalKey<NavigatorState> homeTabNavigatorKey =
       GlobalKey<NavigatorState>();
 
+  static final GlobalKey<NavigatorState> settingsTabNavigatorKey =
+      GlobalKey<NavigatorState>();
+
   NavigationManager._internal() {
     final routes = [
+      GoRoute(
+        path: loginPath,
+        pageBuilder: (context, GoRouterState state) {
+          return getPage(
+            child: const LoginPage(),
+            state: state,
+          );
+        },
+      ),
       StatefulShellRoute.indexedStack(
         parentNavigatorKey: parentNavigatorKey,
-        branches: !offlineMode.value ? _onlineRoutes() : _offlineRoutes(),
+        branches: _onlineRoutes(),
         pageBuilder: (
           BuildContext context,
           GoRouterState state,
           StatefulNavigationShell navigationShell,
         ) {
           return getPage(
-            child: const LoginPage(),
+            child: BottomNavigationPage(child: navigationShell),
             state: state,
           );
         },
@@ -40,7 +54,7 @@ class NavigationManager {
 
     router = GoRouter(
       navigatorKey: parentNavigatorKey,
-      initialLocation: homePath,
+      initialLocation: loginPath,
       routes: routes,
     );
   }
@@ -57,6 +71,7 @@ class NavigationManager {
 
   static const String loginPath = '/login';
   static const String homePath = '/home';
+  static const String settingsPath = '/settings';
 
   List<StatefulShellBranch> _onlineRoutes() {
     return [
@@ -67,26 +82,21 @@ class NavigationManager {
             path: homePath,
             pageBuilder: (context, GoRouterState state) {
               return getPage(
-                child: const LoginPage(),
+                child: const HomePage(),
                 state: state,
               );
             },
           ),
         ],
-      )
-    ];
-  }
-
-  List<StatefulShellBranch> _offlineRoutes() {
-    return [
+      ),
       StatefulShellBranch(
-        navigatorKey: homeTabNavigatorKey,
+        navigatorKey: settingsTabNavigatorKey,
         routes: [
           GoRoute(
-            path: homePath,
+            path: settingsPath,
             pageBuilder: (context, GoRouterState state) {
               return getPage(
-                child: const LoginPage(),
+                child: const SettingsPage(),
                 state: state,
               );
             },

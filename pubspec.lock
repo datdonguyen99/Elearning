@@ -129,6 +129,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.0"
+  fluentui_system_icons:
+    dependency: "direct main"
+    description:
+      name: fluentui_system_icons
+      sha256: "1c79ed0897a0f61dcb442349dc1bb0cba37b5a62b94e60e1fd1b441a28d6f5ba"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.255"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -206,7 +214,7 @@ packages:
     source: hosted
     version: "14.2.3"
   hive:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: hive
       sha256: "8dcf6db979d7933da8217edcec84e9df1bdb4e4edc7fc77dbd5aa74356d6d941"

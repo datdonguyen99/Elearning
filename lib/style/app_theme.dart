@@ -26,5 +26,5 @@ Brightness getBrightnessFromThemeMode(ThemeMode themeMode) {
         SchedulerBinding.instance.platformDispatcher.platformBrightness,
   };
 
-  return themeBrightnessMapping[themeMode] ?? Brightness.light;
+  return themeBrightnessMapping[themeMode] ?? Brightness.dark;
 }

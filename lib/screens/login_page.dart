@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:elearning/services/router_service.dart';
 // import 'package:elearning/widgets/spinner.dart';
 import 'package:elearning/widgets/base_button.dart';
 import 'package:elearning/extensions/l10n.dart';
@@ -149,7 +150,9 @@ class _LoginPageState extends State<LoginPage> {
   // }
 
   void login(String email, String password) async {
+    FocusManager.instance.primaryFocus?.unfocus();
     // print('Login button pressed: $email, $password');
     showCustomToast(message: "Test login toast");
+    NavigationManager.router.go('/home');
   }
 }
